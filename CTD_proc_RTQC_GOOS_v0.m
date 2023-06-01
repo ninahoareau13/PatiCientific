@@ -212,55 +212,54 @@ titleSettings = {'HorizontalAlignment','center','EdgeColor','none','FontSize',18
 gtitle = sprintf('%s%s','Station ', td_station(10:13));
 annotation('textbox','Position',[0.83 0.93 0.2 0.05],'String',gtitle,titleSettings{:})
 
-
-figure(2);clf;set(gcf,'Position', get(0, 'Screensize'),'color','w');
-% ... Pressure time serie ...
-ax3 = subplot(3,3,[1,2,3])
-colorPres=rgb('Gold');
-l1=plot(datetime(mTime(idm),'convertfrom','datenum'),-Pressure(idm),'Markersize',18,'Marker','*','LineStyle','none','Color',rgb('OrangeRed'));
-hold on
-l2=plot(datetime(mTime,'convertfrom','datenum'),-Pressure,'color',colorPres,'Markersize',10,'Marker','.','LineStyle','none');
-title('Pressure [dB]');
-ax3.YAxisLocation = 'right';
-ax3.XTickLabel = {}; 
-hleg=legend([l1],'Location','Best');
-hleg.String={'Maximun Depth'}
-grid on
-set(ax3,'FontSize',12,'FontWeight','bold','color',[0.8 0.8 0.8])
-% ... Speed time serie ...
-ax4 = subplot(3,3,[4,5,6])
-l1=plot(datetime(mTime(1:idm),'convertfrom','datenum'),double(iSpeed(1:idm)),'color',colorSpeedD,'Markersize',8,'Marker','.','LineStyle','none');
-hold on
-l2=plot(datetime(mTime(idm+1:end),'convertfrom','datenum'),double(iSpeed(idm+1:end)),'color',colorSpeedU,'Markersize',8,'Marker','.','LineStyle','none');
-l3=plot(datetime(mTime,'convertfrom','datenum'),iSpeed*zeros,'k--','LineWidth',1.5);
-l4=plot(datetime(mTime(idm),'convertfrom','datenum'),iSpeed(idm),'Markersize',18,'Marker','*','LineStyle','none','Color',rgb('OrangeRed'));
-grid on
-hleg=legend([l1 l2],'Location','Best');
-hleg.String={'Downcast','Upcast'};
-ax4.YAxisLocation = 'right';
-title('Speed [m/s]');
-ax4.XTickLabel = {}; 
-set(ax4,'FontSize',12,'FontWeight','bold','color',[0.8 0.8 0.8])
-
-% ... Temperature time serie ...
-ax5 = subplot(3,3,[7,8,9])
-yyaxis left
-l1=plot(datetime(mTime,'convertfrom','datenum'),Temperature,'Markersize',10,'Marker','.','LineStyle','none');
-hold on
-yyaxis right
-l2=plot(datetime(mTime,'convertfrom','datenum'),Salinity,'Markersize',10,'Marker','.','LineStyle','none');
-%l3=plot(datetime(mTime,'convertfrom','datenum'),Conductivity,'color',colorCondD,'Markersize',10,'Marker','.','LineStyle','none');
-hleg=legend([l1 l2 l3],'Location','Best');
-hleg.String={'Temperature','Salinity'}
-%ax5.YAxisLocation = 'right';
-grid on
-set(ax5,'FontSize',12,'FontWeight','bold','color',[0.8 0.8 0.8])
-
-% ... Write general title for the figure ...
-titleSettings = {'HorizontalAlignment','center','EdgeColor','none','FontSize',18,'FontWeight','bold'};
-%gtitle = sprintf('%s%s%s',td_station(10:12),' of ',td_station(7:8),'-',td_station(5:6),'-',td_station(1:4));
-gtitle = sprintf('%s%s','Station ', td_station(10:13));
-annotation('textbox','Position',[0.83 0.93 0.2 0.05],'String',gtitle,titleSettings{:})
+% figure(2);clf;set(gcf,'Position', get(0, 'Screensize'),'color','w');
+% % ... Pressure time serie ...
+% ax3 = subplot(3,3,[1,2,3])
+% colorPres=rgb('Gold');
+% l1=plot(datetime(mTime(idm),'convertfrom','datenum'),-Pressure(idm),'Markersize',18,'Marker','*','LineStyle','none','Color',rgb('OrangeRed'));
+% hold on
+% l2=plot(datetime(mTime,'convertfrom','datenum'),-Pressure,'color',colorPres,'Markersize',10,'Marker','.','LineStyle','none');
+% title('Pressure [dB]');
+% ax3.YAxisLocation = 'right';
+% ax3.XTickLabel = {}; 
+% hleg=legend([l1],'Location','Best');
+% hleg.String={'Maximun Depth'}
+% grid on
+% set(ax3,'FontSize',12,'FontWeight','bold','color',[0.8 0.8 0.8])
+% % ... Speed time serie ...
+% ax4 = subplot(3,3,[4,5,6])
+% l1=plot(datetime(mTime(1:idm),'convertfrom','datenum'),double(iSpeed(1:idm)),'color',colorSpeedD,'Markersize',8,'Marker','.','LineStyle','none');
+% hold on
+% l2=plot(datetime(mTime(idm+1:end),'convertfrom','datenum'),double(iSpeed(idm+1:end)),'color',colorSpeedU,'Markersize',8,'Marker','.','LineStyle','none');
+% l3=plot(datetime(mTime,'convertfrom','datenum'),iSpeed*zeros,'k--','LineWidth',1.5);
+% l4=plot(datetime(mTime(idm),'convertfrom','datenum'),iSpeed(idm),'Markersize',18,'Marker','*','LineStyle','none','Color',rgb('OrangeRed'));
+% grid on
+% hleg=legend([l1 l2],'Location','Best');
+% hleg.String={'Downcast','Upcast'};
+% ax4.YAxisLocation = 'right';
+% title('Speed [m/s]');
+% ax4.XTickLabel = {}; 
+% set(ax4,'FontSize',12,'FontWeight','bold','color',[0.8 0.8 0.8])
+% 
+% % ... Temperature time serie ...
+% ax5 = subplot(3,3,[7,8,9])
+% yyaxis left
+% l1=plot(datetime(mTime,'convertfrom','datenum'),Temperature,'Markersize',10,'Marker','.','LineStyle','none');
+% hold on
+% yyaxis right
+% l2=plot(datetime(mTime,'convertfrom','datenum'),Salinity,'Markersize',10,'Marker','.','LineStyle','none');
+% %l3=plot(datetime(mTime,'convertfrom','datenum'),Conductivity,'color',colorCondD,'Markersize',10,'Marker','.','LineStyle','none');
+% hleg=legend([l1 l2 l3],'Location','Best');
+% hleg.String={'Temperature','Salinity'}
+% %ax5.YAxisLocation = 'right';
+% grid on
+% set(ax5,'FontSize',12,'FontWeight','bold','color',[0.8 0.8 0.8])
+% 
+% % ... Write general title for the figure ...
+% titleSettings = {'HorizontalAlignment','center','EdgeColor','none','FontSize',18,'FontWeight','bold'};
+% %gtitle = sprintf('%s%s%s',td_station(10:12),' of ',td_station(7:8),'-',td_station(5:6),'-',td_station(1:4));
+% gtitle = sprintf('%s%s','Station ', td_station(10:13));
+% annotation('textbox','Position',[0.83 0.93 0.2 0.05],'String',gtitle,titleSettings{:})
 
 %ofig = sprintf('%s%s%s','/home/nina/Escritorio/WORK/PatiCientific/data/SPV/SeaWater/SeaDataNet_Format/Figures/RAW_',td_station);
 %saveas(gcf,ofig,'jpg')
@@ -301,15 +300,15 @@ figure(1)
 ax1 = subplot(2,4,[1,5]) % ... Temperature profile Flags ...
 clear tt; tt=find(QC_Temperature==4);
 if ~isempty(tt)
-    l4=plot(Temperature(QC_Temperature==4),-Pressure(QC_Temperature==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
-    hleg=legend([l1 l2 l4],'Location','Best');
+    l5=plot(Temperature(QC_Temperature==4),-Pressure(QC_Temperature==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
+    hleg=legend([l1 l2 l5],'Location','Best');
     hleg.String={'Downcast','Upcast','RTQC6'};
 end
 ax11 = subplot(2,4,[2,6]) % ... Salinity profile Flags ...
 clear tt; tt=find(QC_Salinity==4);
 if ~isempty(tt)
-    l4=plot(Salinity(QC_Salinity==4),-Pressure(QC_Salinity==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
-    hleg=legend([l1 l2 l4],'Location','Best');
+    l5=plot(Salinity(QC_Salinity==4),-Pressure(QC_Salinity==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
+    hleg=legend([l1 l2 l5],'Location','Best');
     hleg.String={'Downcast','Upcast','RTQC6'};
 end
 
@@ -371,8 +370,8 @@ end
 ax11 = subplot(2,4,[2,6]) % ... Salinity profile Flags ...
 clear tt; tt=find(QC_Salinity==4);
 if ~isempty(tt)
-    l4=plot(Salinity(QC_Salinity==4),-Pressure(QC_Salinity==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
-    hleg=legend([l1 l2 l4],'Location','Best');
+    l5=plot(Salinity(QC_Salinity==4),-Pressure(QC_Salinity==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
+    hleg=legend([l1 l2 l5],'Location','Best');
     hleg.String={'Downcast','Upcast','RTQC7'};
 end
 
@@ -382,15 +381,22 @@ ff = find(Pressure>50.0);
 if (~isempty(ff))
     QC_Pressure(ff) = 4;
 end
-% 
-% figure(2)
-% ax3 = subplot(3,4,[3,4])
-% clear tt; tt=find(QC_Pressure==4);
-% if ~isempty(tt)
-%     l4=plot(datetime(mTime(QC_Pressure==4),'convertfrom','datenum'),-Pressure(QC_Pressure==4),'color',colorFlagP4,'Markersize',10,'Marker','.','LineStyle','none');
-%     hleg=legend([l1 l2 l4],'Location','Best');
-%     hleg.String={'Downcast','Upcast','RTQC7'};
-% end
+
+figure(1)
+ax1 = subplot(2,4,[1,5]) % ... Temperature profile Flags ...
+clear tt; tt=find(QC_Pressure==4);
+if ~isempty(tt)
+    l5=plot(Temperature(QC_Pressure==4),-Pressure(QC_Pressure==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
+    hleg=legend([l1 l2 l5],'Location','Best');
+    hleg.String={'Downcast','Upcast','RTQC7'};
+end 
+ax11 = subplot(2,4,[2,6]) % ... Salinity profile Flags ...
+if ~isempty(tt)
+    l5=plot(Salinity(QC_Pressure==4),-Pressure(QC_Pressure==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
+    hleg=legend([l1 l2 l5],'Location','Best');
+    hleg.String={'Downcast','Upcast','RTQC7'};
+end
+
 
 
 % ............................................
@@ -431,26 +437,26 @@ if ~isempty(tt)
     hleg=legend([l1 l2 l8],'Location','Best');
     hleg.String={'Downcast','Upcast','RTQC8'};
 end
-clear tt; tt=find(QC_Temperature==3);
-if ~isempty(tt)
-    l8=plot(Temperature(QC_Temperature==3),-Pressure(QC_Temperature==3),'color',colorFlagT3,'Marker','.','LineStyle','none');
-    hleg=legend([l1 l2 l8],'Location','Best');
-    hleg.String={'Downcast','Upcast','RTQC8'};
-end
+% clear tt; tt=find(QC_Temperature==3);
+% if ~isempty(tt)
+%     l8=plot(Temperature(QC_Temperature==3),-Pressure(QC_Temperature==3),'color',colorFlagT3,'Marker','.','LineStyle','none');
+%     hleg=legend([l1 l2 l8],'Location','Best');
+%     hleg.String={'Downcast','Upcast','RTQC8'};
+% end
 ax11 = subplot(2,4,[2,6]) % ... Salinity profile Flags ...
 clear tt; tt=find(QC_Salinity==2);
 if ~isempty(tt)
-    l4=plot(Salinity(QC_Salinity==2),-Pressure(QC_Salinity==2),'color',colorFlagT2,'Marker','.','LineStyle','none');
-    hleg=legend([l1 l2 l4],'Location','Best');
+    l8=plot(Salinity(QC_Salinity==2),-Pressure(QC_Salinity==2),'color',colorFlagT2,'Marker','.','LineStyle','none');
+    hleg=legend([l1 l2 l8],'Location','Best');
     hleg.String={'Downcast','Upcast','RTQC8'};
 end
-ax11 = subplot(2,4,[2,6]) % ... Salinity profile Flags ...
-clear tt; tt=find(QC_Salinity==3);
-if ~isempty(tt)
-    l4=plot(Salinity(QC_Salinity==3),-Pressure(QC_Salinity==3),'color',colorFlagT3,'Marker','.','LineStyle','none');
-    hleg=legend([l1 l2 l4],'Location','Best');
-    hleg.String={'Downcast','Upcast','RTQC8'};
-end
+% ax11 = subplot(2,4,[2,6]) % ... Salinity profile Flags ...
+% clear tt; tt=find(QC_Salinity==3);
+% if ~isempty(tt)
+%     l4=plot(Salinity(QC_Salinity==3),-Pressure(QC_Salinity==3),'color',colorFlagT3,'Marker','.','LineStyle','none');
+%     hleg=legend([l1 l2 l4],'Location','Best');
+%     hleg.String={'Downcast','Upcast','RTQC8'};
+% end
 % ... Speed profile ...
 ax2 = subplot(2,4,[4,8])
 clear tt; tt=find(QC_iSpeed==4);
@@ -459,29 +465,8 @@ if ~isempty(tt)
     hleg=legend([l1 l2 l4],'Location','Best');
     hleg.String={'Downcast','Upcast','RTQC8'};
 end
+return
 
-% % ... Speed time serie ...
-% ax4 = subplot(3,4,[7,8])
-% clear tt; tt=find(QC_iSpeed==4);
-% if ~isempty(tt)
-%     l4=plot(datetime(mTime(tt),'convertfrom','datenum'),iSpeed(tt),'color','r','Markersize',8,'Marker','.','LineStyle','none');
-%     hleg=legend([l1 l2 l4],'Location','Best');
-%     hleg.String={'Downcast','Upcast','RTQC8'};
-% end
-% % ... Temperature time serie ...
-% ax5 = subplot(3,4,[11,12])
-% clear tt; tt=find(QC_Temperature==2);
-% if ~isempty(tt)
-%     l8=plot(datetime(mTime(QC_Temperature==2),'convertfrom','datenum'),double(Temperature(QC_Temperature==2)),'color',colorFlagT2,'Markersize',10,'Marker','.','LineStyle','none');
-%     hleg=legend([l1 l2 l8],'Location','Best');
-%     hleg.String={'Downcast','Upcast','RTQC8'};
-% end
-% clear tt; tt=find(QC_Temperature==3);
-% if ~isempty(tt)
-%     l8=plot(datetime(mTime(QC_Temperature==3),'convertfrom','datenum'),double(Temperature(QC_Temperature==3)),'color',colorFlagT3,'Markersize',10,'Marker','.','LineStyle','none');
-%     hleg=legend([l1 l2 l8],'Location','Best');
-%     hleg.String={'Downcast','Upcast','RTQC8'};
-% end
 
 % ............................................
 % ... RTQC9 : Spike test
@@ -871,7 +856,7 @@ if (~isempty(ff))
 end
 
 BotDepth = EDMO_code;
-BotDepth{1} = blanks(length(BotDepth{1}));
+BotDepth(1) = blanks(length(BotDepth(1)));
 
 %% CREATE Table to Write output in ODV .txt files
 % ...
