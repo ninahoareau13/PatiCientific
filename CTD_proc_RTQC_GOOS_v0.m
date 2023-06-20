@@ -661,7 +661,7 @@ end
 %     hleg.String={'Downcast','Upcast','RTQC13'};
 % end
 
-return
+
 %% II. Delayed Mode (DM) specific QC for Pati Cientific platform ...
 % ...
 % ... SPVQC1 : Remove first data as the sensors need time to stabilize
@@ -677,28 +677,31 @@ return
 % ... SPVQC1 : Remove first data as the sensors need time to stabilize ?
 % ...
 tinit = 40;
-tend = 6;
-QC_Temperature(1:tinit) = 3;
-QC_Temperature(end-tend:end) = 3;
+tend = 13;
+QC_Temperature(1:tinit) = 4;
+QC_Salinity(1:tinit) = 4;
+QC_Temperature(end-tend:end) = 4;
+QC_Salinity(end-tend:end) = 4;
 
-figure(1)
+% ... Figures of QC test ...
+figure(1);
 % ... Temperature profile ...
 ax1 = subplot(3,4,[1,5,9])
-clear tt; tt=find(QC_Temperature==3);
+clear tt; tt=find(QC_Temperature==4);
 if ~isempty(tt)
-    l21=plot(Temperature(QC_Temperature==3),-Pressure(QC_Temperature==3),'color',colorFlagT3,'Marker','.','LineStyle','none');
+    l21=plot(Temperature(QC_Temperature==4),-Pressure(QC_Temperature==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
     hleg=legend([l1 l2 l21],'Location','Best');
     hleg.String={'Downcast','Upcast','SPVQC1'};
 end
-% ... Temperature time serie ...
-ax5 = subplot(3,4,[11,12])
-clear tt; tt=find(QC_Temperature==3);
+ax11 = subplot(2,4,[2,6]) % ... Salinity profile Flags ...
+clear tt; tt=find(QC_Salinity==4);
 if ~isempty(tt)
-    l21=plot(datetime(mTime(QC_Temperature==3),'convertfrom','datenum'),double(Temperature(QC_Temperature==3)),'color',colorFlagT3,'Markersize',10,'Marker','.','LineStyle','none');
-    hleg=legend([l1 l2],'Location','Best');
-    hleg.String={'Downcast','Upcast'};
+    l21=plot(Salinity(QC_Salinity==4),-Pressure(QC_Salinity==4),'color',colorFlagT4,'Marker','.','LineStyle','none');
+    hleg=legend([l1 l2 l21],'Location','Best');
+    hleg.String={'Downcast','Upcast','SPVQC1'};
 end
 
+return
 
 % ...
 % ... SPVQC2 : Wild Edit (get Mean and STD for all scans)
