@@ -12,9 +12,7 @@ addpath('/home/nina/Escritorio/WORK/Programs/matlab_prog/m_map/');
 
 %% ... Date of the SPV campagn -> cdate
 % ...
-cdate = '20230606'
-
-
+cdate = '20230517'
 
 %% ... POSITIONS eStela data (from Excel file) ...
 % ...
@@ -28,7 +26,6 @@ end
 [msg,head,data,ini]= read_sbe(ifile);
 [msg,ini,str] = read_par(ifile);
 
-return
 year = data(:,1);
 month = abs(data(:,2));
 dd = abs(data(:,3));
@@ -49,7 +46,7 @@ clear data tt ifile Time;
 
 %% ... Get CastAway CTD data (from Excel file) ...
 % ... To get the correct size for the position data ...
-ifile = sprintf('%s%s%s%s','/home/nina/Escritorio/WORK/PatiCientific/data/CastAway_CTD/RAW/SPV_',cdate,'/10J101601_',cdate,'_all_tram.csv')
+ifile = sprintf('%s%s%s%s','/home/nina/Escritorio/WORK/PatiCientific/data/SPV/SeaWater/Surface/CastAwayCTD/RAW/aggregate_surface_sections/10J101601_',cdate,'_all_tram.csv')
 if ~exist(ifile,'file')
    disp('CTD file does not exist')
    ifile
@@ -77,9 +74,7 @@ Cond = data(:,9);   % uS/cm
 
 CTD = timetable(Time,Pres,Temp,Cond);
 
-%clear data tt ifile;
-
-
+clear data tt ifile;
 %% Create collocated data ...
 % ...
 
@@ -87,7 +82,7 @@ pati = synchronize(eStelaT,CTD);
 
 %% ... save output file
 % ...
-ofile = sprintf('%s%s%s','/home/nina/Escritorio/WORK/PatiCientific/data/CastAway_CTD/Collocated/SPV_',cdate,'_collocated_raw');
+ofile = sprintf('%s%s%s','/home/nina/Escritorio/WORK/PatiCientific/data/SPV/SeaWater/Surface/CastAwayCTD/RAW/collocated_surface_sections/SPV_',cdate,'_collocated_raw');
 writetable(timetable2table(pati),sprintf('%s%s',ofile,'.dat'));   % txt file with struct of matlab
 
 

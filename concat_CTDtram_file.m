@@ -13,7 +13,7 @@ close all
 addpath('/home/nina/Escritorio/WORK/Programs/matlab_prog/m_map/');
 addpath('/home/nina/Escritorio/WORK/Programs/matlab_prog/');
 
-cdate = '20230627'
+cdate = '20230517'
 year = str2num(cdate(1:4));
 month = str2num(cdate(5:6));
 dd = str2num(cdate(7:8));
