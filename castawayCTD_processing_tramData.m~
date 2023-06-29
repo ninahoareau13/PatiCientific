@@ -64,7 +64,7 @@ CTDr = timetable(Time,T,Pres,Lon,Lat,Speed,FlagP,Temp,FlagT,Cond,FlagC,Sal,FlagS
 % ...
 % ... Check Salinity conversion from Temp & Cond & Pressure ...
 % ...
-figure;
+figure(1);
 set(gcf,'Position', get(0, 'Screensize'),'color','w');
 % ... Temperature
 plot(CTDr.Time,CTDr.Temp,'color',[0 0.4470 0.7410],'Markersize',10,'Marker','.','LineStyle','none');
@@ -85,158 +85,157 @@ legend('Temperature [C]','Conductivity [mS/cm]','Salinity [PSU]','Pressure [dBar
 title(sprintf('%s%s','CastAway CTD data - SPV - ',cdate));
 set(gca,'FontWeight','Bold','FontSize',18)
 
-% 
-% % ......................................................
-% % ... A. Plot Campain information ...
-% % ... Define SPV stations ...
-% % ... ['TD1'; 'TD2' ;'TD3' ;'TD4'; 'TD5'; 'TD6'];
-% % ...
-% SPV_Lon = [41.3856; 41.3798; 41.3749; 41.3806; 41.3785; 41.3757];
-% SPV_Lat = [2.2099; 2.1986; 2.1951; 2.2029; 2.2084; 2.2162];
-% 
-% % ...
-% % ... A. Compare Time/Pressure/Speed/Temp/Cond/Salinity depending on the vessel position  ...
-% % ...
-% figure;
-% set(gcf,'position',get(0, 'Screensize'),'color','w');
-% ax = gca;
-% set(ax,'YColor','k','XColor','k','linewidth',1,'fontsize',16);
-% 
-% % 1. Time
-% ax1 = subplot(2,3,1);
-% scatter(CTDr.Lat,CTDr.Lon,[],CTDr.T,'filled')
-% ylim([41.37 41.39])
-% ylabel('Latitude [ \circN ]')
-% xlim([2.19 2.22])
-% xlabel('Longitude [ \circE ]')
-% colorbar
-% set(colorbar,'YTickLabel',{'Start' '' '' '' '' '' 'End'})
-% colormap (ax1,flipud(gray))
-% grid on
-% % ... Add SPV stations ...
-% hold on
-% scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
-% % ... Title 
-% title(sprintf('%s%s','Time [Sec] - ',cdate));
-% set(gca,'fontsize',14,'FontWeight','normal')
-% 
-% 
-% % 2. Speed
-% ax2 = subplot(2,3,2);
-% scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Speed,'filled')
-% ylim([41.37 41.39])
-% ylabel('Latitude [ \circN ]')
-% xlim([2.19 2.22])
-% xlabel('Longitude [ \circE ]')
-% colorbar
-% caxis([0 5]);
-% colormap(ax2,flipud(gray))
-% grid on
-% % ... Add SPV stations ...
-% hold on
-% scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
-% % ... Title 
-% title(sprintf('%s%s','Speed - ',cdate));
-% set(gca,'fontsize',14,'FontWeight','normal')
-% 
-% 
-% % 3. Pressure
-% ax3 = subplot(2,3,3)
-% scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Pres,'filled')
-% ylim([41.37 41.39])
-% ylabel('Latitude [ \circN ]')
-% xlim([2.19 2.22])
-% xlabel('Longitude [ \circE ]')
-% colorbar
-% caxis([0 2]);
-% colormap (ax3,parula)
-% grid on
-% % ... Add SPV stations ...
-% hold on
-% scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
-% % ... Title 
-% title(sprintf('%s%s','Pressure - ',cdate));
-% set(gca,'fontsize',14,'FontWeight','normal')
-% 
-% 
-% % 4. Temperature 
-% ax4 = subplot(2,3,4)
-% scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Temp,'filled')
-% ylim([41.37 41.39])
-% ylabel('Latitude [ \circN ]')
-% xlim([2.19 2.22])
-% xlabel('Longitude [ \circE ]')
-% colorbar
-% caxis([12.5 14])
-% colormap(ax4,jet)
-% grid on
-% % ... Add SPV stations ...
-% hold on
-% scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
-% % ... Title 
-% title('Temperature (raw)');
-% set(gca,'fontsize',14,'FontWeight','normal')
-% 
-% 
-% % 5. Conductivity
-% ax5 = subplot(2,3,5)
-% scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Cond,'filled')
-% ylim([41.37 41.39])
-% ylabel('Latitude [ \circN ]')
-% xlim([2.19 2.22])
-% xlabel('Longitude [ \circE ]')
-% colorbar
-% caxis([40 50])
-% colormap(ax5,jet)
-% grid on
-% % ... Add SPV stations ...
-% hold on
-% scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
-% % ... Title 
-% title('Conductivity (raw)');
-% set(gca,'fontsize',14,'FontWeight','normal')
-% 
-% % 6. Salinity
-% ax6 = subplot(2,3,6)
-% scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Sal,'filled')
-% ylim([41.37 41.39])
-% ylabel('Latitude [ \circN ]')
-% xlim([2.19 2.22])
-% xlabel('Longitude [ \circE ]')
-% colorbar
-% caxis([37 39])
-% colormap(ax6,jet)
-% grid on
-% % ... Add SPV stations ...
-% hold on
-% scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
-% % ... Title 
-% title('Salinity (raw)');
-% set(gca,'fontsize',14,'FontWeight','normal')
+
+% ......................................................
+% ... A. Plot Campain information ...
+% ... Define SPV stations ...
+% ... ['TD1'; 'TD2' ;'TD3' ;'TD4'; 'TD5'; 'TD6'];
+% ...
+SPV_Lon = [41.3856; 41.3798; 41.3749; 41.3806; 41.3785; 41.3757];
+SPV_Lat = [2.2099; 2.1986; 2.1951; 2.2029; 2.2084; 2.2162];
+
+% ...
+% ... A. Compare Time/Pressure/Speed/Temp/Cond/Salinity depending on the vessel position  ...
+% ...
+figure(2);
+set(gcf,'position',get(0, 'Screensize'),'color','w');
+ax = gca;
+set(ax,'YColor','k','XColor','k','linewidth',1,'fontsize',16);
+
+% 1. Time
+ax1 = subplot(2,3,1);
+scatter(CTDr.Lat,CTDr.Lon,[],CTDr.T,'filled')
+ylim([41.37 41.39])
+ylabel('Latitude [ \circN ]')
+xlim([2.19 2.22])
+xlabel('Longitude [ \circE ]')
+colorbar
+set(colorbar,'YTickLabel',{'Start' '' '' '' '' '' 'End'})
+colormap (ax1,flipud(gray))
+grid on
+% ... Add SPV stations ...
+hold on
+scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
+% ... Title 
+title(sprintf('%s%s','Time [Sec] - ',cdate));
+set(gca,'fontsize',14,'FontWeight','normal')
 
 
-% % .............................................................
-% % ...
-% % ... B. Temp & Salinity time serie ...
-% % ...
-% figure;
-% set(gcf,'Position', get(0, 'Screensize'),'color','w');
-% yyaxis left % ... Temperature on Left
-% plot(CTDr.Time,CTDr.Temp,'color',[0 0.4470 0.7410],'Markersize',10,'Marker','.','LineStyle','none');
-% ylabel('Temperature [ \circC ]')
-% hold on
-% yyaxis right % ... Salinity on Right
-% plot(CTDr.Time,CTDr.Cond,'color',[0.4660 0.6740 0.1880],'Markersize',10,'Marker','.','LineStyle','none');
-% ylabel('Salinityty [ psu ]')
-% grid on
-% % ... Control color of yaxis ...
-% ax = gca;
-% ax.YAxis(1).Color = [0 0.4470 0.7410];
-% ax.YAxis(2).Color = [0.4660 0.6740 0.1880];
-% %legend('Temperature [C]','Conductivity [mS/cm]','Location','bestoutside')
-% title(sprintf('%s%s','CastAway CT data - SPV - ',cdate));
-% set(gca,'FontWeight','Bold','FontSize',18)
-% 
+% 2. Speed
+ax2 = subplot(2,3,2);
+scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Speed,'filled')
+ylim([41.37 41.39])
+ylabel('Latitude [ \circN ]')
+xlim([2.19 2.22])
+xlabel('Longitude [ \circE ]')
+colorbar
+caxis([0 3]);
+colormap(ax2,flipud(gray))
+grid on
+% ... Add SPV stations ...
+hold on
+scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
+% ... Title 
+title(sprintf('%s%s','Speed - ',cdate));
+set(gca,'fontsize',14,'FontWeight','normal')
+
+
+% 3. Pressure
+ax3 = subplot(2,3,3)
+scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Pres,'filled')
+ylim([41.37 41.39])
+ylabel('Latitude [ \circN ]')
+xlim([2.19 2.22])
+xlabel('Longitude [ \circE ]')
+colorbar
+caxis([0 0.6]);
+colormap (ax3,parula)
+grid on
+% ... Add SPV stations ...
+hold on
+scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
+% ... Title 
+title(sprintf('%s%s','Pressure - ',cdate));
+set(gca,'fontsize',14,'FontWeight','normal')
+
+
+% 4. Temperature 
+ax4 = subplot(2,3,4)
+scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Temp,'filled')
+ylim([41.37 41.39])
+ylabel('Latitude [ \circN ]')
+xlim([2.19 2.22])
+xlabel('Longitude [ \circE ]')
+colorbar
+caxis([20 30])
+colormap(ax4,jet)
+grid on
+% ... Add SPV stations ...
+hold on
+scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
+% ... Title 
+title('Temperature (raw)');
+set(gca,'fontsize',14,'FontWeight','normal')
+
+
+% 5. Conductivity
+ax5 = subplot(2,3,5)
+scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Cond,'filled')
+ylim([41.37 41.39])
+ylabel('Latitude [ \circN ]')
+xlim([2.19 2.22])
+xlabel('Longitude [ \circE ]')
+colorbar
+caxis([50 60])
+colormap(ax5,jet)
+grid on
+% ... Add SPV stations ...
+hold on
+scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
+% ... Title 
+title('Conductivity (raw)');
+set(gca,'fontsize',14,'FontWeight','normal')
+
+% 6. Salinity
+ax6 = subplot(2,3,6)
+scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Sal,'filled')
+ylim([41.37 41.39])
+ylabel('Latitude [ \circN ]')
+xlim([2.19 2.22])
+xlabel('Longitude [ \circE ]')
+colorbar
+caxis([37.5 39])
+colormap(ax6,jet)
+grid on
+% ... Add SPV stations ...
+hold on
+scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
+% ... Title 
+title('Salinity (raw)');
+set(gca,'fontsize',14,'FontWeight','normal')
+
+% .............................................................
+% ...
+% ... B. Temp & Salinity time serie ...
+% ...
+figure(3);
+set(gcf,'Position', get(0, 'Screensize'),'color','w');
+yyaxis left % ... Temperature on Left
+plot(CTDr.Time,CTDr.Temp,'color',[0 0.4470 0.7410],'Markersize',10,'Marker','.','LineStyle','none');
+ylabel('Temperature [ \circC ]')
+hold on
+yyaxis right % ... Salinity on Right
+plot(CTDr.Time,CTDr.Sal,'color',[0.4660 0.6740 0.1880],'Markersize',10,'Marker','.','LineStyle','none');
+ylabel('Salinityty [ psu ]')
+grid on
+% ... Control color of yaxis ...
+ax = gca;
+ax.YAxis(1).Color = [0 0.4470 0.7410];
+ax.YAxis(2).Color = [0.4660 0.6740 0.1880];
+legend('Temperature [C]','Salinity [psu]','Location','bestoutside')
+title(sprintf('%s%s','CastAway CT data - SPV - ',cdate));
+set(gca,'FontWeight','Bold','FontSize',18)
+
 % % ...
 % % ... C. Pressure & Depth time serie ...
 % % ...
@@ -315,21 +314,21 @@ end
 % ... 3. Check geophysical values ...
 % ... if no geophysical values, Flag = 4
 
-% ... Check Temperature to be in geophysical values (12 < Temp < 28)
+% ... Check Temperature to be in geophysical values (10 < Temp < 30)
 % ...
-pp = CTDr.Temp > 28 | CTDr.Temp < 12 % & CTDr.FlagT~=9;
+pp = CTDr.Temp > 30 | CTDr.Temp < 10; % & CTDr.FlagT~=9;
 CTDr.FlagT(pp) = 4;
 
 % ... Check Conductivity to be in Sea water values (20 < Cond < 60)
 % ...
 clear pp
-pp = CTDr.Cond > 60 | CTDr.Cond < 20 % & CTDr.FlagC~=9;
+pp = CTDr.Cond > 60 | CTDr.Cond < 20; % & CTDr.FlagC~=9;
 CTDr.FlagC(pp) = 4; 
 
 % ... Check Salinity to be in Sea water values (32 < Cond < 40)
 % ...
 clear pp
-pp = CTDr.Sal > 40 | CTDr.Sal < 32 % & CTDr.FlagS~=9;
+pp = CTDr.Sal > 40 | CTDr.Sal < 32; % & CTDr.FlagS~=9;
 CTDr.FlagS(pp) = 4; 
 
 % ... Check Pressure for surface data (0.1 < Pres < 1.5)
@@ -346,7 +345,7 @@ CTDr.FlagS(pp) = 3;
 % ... 2 cases: - Speed higher than 5 kts (create emulsion in CTD inducing bad conductivity data)
 % ...          - Speed smaller than 0.5 kts (SPV drift during CTD profil measurement or SPV tack)
 clear pp
-pp = CTDr.Speed > 5 %& CTDr.FlagP~=9;
+pp = CTDr.Speed > 5; %& CTDr.FlagP~=9;
 CTDr.FlagC(pp) = 3; 
 CTDr.FlagS(pp) = 3;
 

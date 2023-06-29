@@ -236,7 +236,6 @@ legend('Temperature [C]','Salinity [psu]','Location','bestoutside')
 title(sprintf('%s%s','CastAway CT data - SPV - ',cdate));
 set(gca,'FontWeight','Bold','FontSize',18)
 
-return
 % % ...
 % % ... C. Pressure & Depth time serie ...
 % % ...
@@ -315,27 +314,27 @@ end
 % ... 3. Check geophysical values ...
 % ... if no geophysical values, Flag = 4
 
-% ... Check Temperature to be in geophysical values (12 < Temp < 28)
+% ... Check Temperature to be in geophysical values (10 < Temp < 30)
 % ...
-pp = CTDr.Temp > 28 | CTDr.Temp < 12 % & CTDr.FlagT~=9;
+pp = CTDr.Temp > 30 | CTDr.Temp < 10; % & CTDr.FlagT~=9;
 CTDr.FlagT(pp) = 4;
 
 % ... Check Conductivity to be in Sea water values (20 < Cond < 60)
 % ...
 clear pp
-pp = CTDr.Cond > 60 | CTDr.Cond < 20 % & CTDr.FlagC~=9;
+pp = CTDr.Cond > 60 | CTDr.Cond < 20; % & CTDr.FlagC~=9;
 CTDr.FlagC(pp) = 4; 
 
 % ... Check Salinity to be in Sea water values (32 < Cond < 40)
 % ...
 clear pp
-pp = CTDr.Sal > 40 | CTDr.Sal < 32 % & CTDr.FlagS~=9;
+pp = CTDr.Sal > 40 | CTDr.Sal < 32; % & CTDr.FlagS~=9;
 CTDr.FlagS(pp) = 4; 
 
-% ... Check Pressure for surface data (0.1 < Pres < 1.5)
+% ... Check Pressure for surface data (0.02 < Pres < 1.5)
 % ...
 clear pp
-pp = CTDr.Pres <= 0.1;
+pp = CTDr.Pres <= 0.02;
 CTDr.FlagC(pp) = 3;  % Flag for position instrument -> BAD Conductivity -> Salinity
 CTDr.FlagS(pp) = 3;
 
@@ -345,13 +344,13 @@ CTDr.FlagS(pp) = 3;
 % ... FlagP -> Flag Position
 % ... 2 cases: - Speed higher than 5 kts (create emulsion in CTD inducing bad conductivity data)
 % ...          - Speed smaller than 0.5 kts (SPV drift during CTD profil measurement or SPV tack)
-clear pp
-pp = CTDr.Speed > 5 %& CTDr.FlagP~=9;
-CTDr.FlagC(pp) = 3; 
-CTDr.FlagS(pp) = 3;
+% clear pp
+% pp = CTDr.Speed > 5; %& CTDr.FlagP~=9;
+% CTDr.FlagC(pp) = 3; 
+% CTDr.FlagS(pp) = 3;
 
 clear pp
-pp = CTDr.Speed < 0.5 & CTDr.Pres > 4 %& CTDr.FlagP~=9;
+pp = CTDr.Speed < 0.3 & CTDr.Pres > 4; %& CTDr.FlagP~=9;
 CTDr.FlagC(pp) = 3;
 CTDr.FlagS(pp) = 3;
 
