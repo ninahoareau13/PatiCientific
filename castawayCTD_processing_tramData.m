@@ -236,19 +236,18 @@ legend('Temperature [C]','Salinity [psu]','Location','bestoutside')
 title(sprintf('%s%s','CastAway CT data - SPV - ',cdate));
 set(gca,'FontWeight','Bold','FontSize',18)
 
-% % ...
-% % ... C. Pressure & Depth time serie ...
-% % ...
-% figure;
-% set(gcf,'Position', get(0, 'Screensize'),'color','w');
-% plot(CTDr.Time,CTDr.Pres,'color',[0.4 0.4 1],'Markersize',10,'Marker','.','LineStyle','none');
-% ylabel('Pressure [ dBar ]')
-% grid on
-% set(gca,'Ylabel','Reverse');
-% % ... Control color of yaxis ...
-% title(sprintf('%s%s',' SPV cruise - ',cdate));
-% set(gca,'FontWeight','Bold','FontSize',18)
-% return
+% ...
+% ... C. Pressure & Depth time serie ...
+% ...
+figure;
+set(gcf,'Position', get(0, 'Screensize'),'color','w');
+plot(CTDr.Time,CTDr.Pres,'color',[0.4 0.4 1],'Markersize',10,'Marker','.','LineStyle','none');
+ylabel('Pressure [ dBar ]')
+grid on
+%set(gca,'Ylabel','Reverse');
+% ... Control color of yaxis ...
+title(sprintf('%s%s',' SPV cruise - ',cdate));
+set(gca,'FontWeight','Bold','FontSize',18)
 
 
 %% ... Start Quality Control for the data ...
@@ -270,14 +269,16 @@ indNan = isnan(CTDr.Cond); CTDr.FlagC(indNan) = 9; clear indNan
 indNan = isnan(CTDr.Sal); CTDr.FlagS(indNan) = 9;
 
 % ...
-% ... 2. Flag as BAD data (Flag=4) first & last 30 sec of each data transect
+% ... 2. Flag as BAD data (Flag=4) first & last 20 sec of each data transect
 % ... Find the index of each transect (from Temperature data)
 % ... Because need 30sec for sensor stabilizacion
-% ... And 30 sec to shut down the CTD 
+% ... And 20 sec to shut down the CTD 
 % ...
 indtrans = find(CTDr.FlagT~=9);
 indtrans1 = circshift(indtrans,-1);
 inddiff = indtrans1 - indtrans;
+
+nsec = 20;
 
 pp = find(abs(inddiff)>1);
 ncast = size(pp)
@@ -299,13 +300,13 @@ end
 for i = 1:ncast
     ii = castI(i);
     fi = castE(i);
-    CTDr.FlagT(ii:ii+30) = 4;  % 30 sec at the biginning
-    CTDr.FlagC(ii:ii+30) = 4;
-    CTDr.FlagS(ii:ii+30) = 4;
+    CTDr.FlagT(ii:ii+nsec) = 4;  % 20 sec at the biginning
+    CTDr.FlagC(ii:ii+nsec) = 4;
+    CTDr.FlagS(ii:ii+nsec) = 4;
 
-    CTDr.FlagT(fi-30:fi) = 4;  % 30 sec at the end
-    CTDr.FlagC(fi-30:fi) = 4;
-    CTDr.FlagS(fi-30:fi) = 4;
+    CTDr.FlagT(fi-nsec:fi) = 4;  % 20 sec at the end
+    CTDr.FlagC(fi-nsec:fi) = 4;
+    CTDr.FlagS(fi-nsec:fi) = 4;
 end
 
 
@@ -357,46 +358,73 @@ CTDr.FlagS(pp) = 3;
 
 %% ... Figures: Checking the Quality Control process 
 % ...
-ppT = find(CTDr.FlagT>=3);   % ... Only BAD data due to BAD position (pressure or Speed)
-ppS = find(CTDr.FlagS>=3);
-ppP = find(CTDr.FlagS==3);
+ppT = find(CTDr.FlagT<3);   % ... Only GOOD data
+ppS = find(CTDr.FlagS<3);
+ppP = find(CTDr.FlagS<3);
 
 % ... I. Time serie Figures
 % ...
 % ... All parameters: Temp, Pres, Speed, Cond, Sal
-figure;
-set(gcf,'Position', get(0, 'Screensize'),'color','w');
+% figure;
+% set(gcf,'Position', get(0, 'Screensize'),'color','w');
 % ... Temperature
-plot(CTDr.Time,CTDr.Temp,'color',[0 0.4470 0.7410],'Markersize',10,'Marker','.','LineStyle','none');
+figure
+plot(CTDr.Time,CTDr.Temp,'color',[0.7 0.7 0.7],'Marker','.','LineStyle','-');
 hold on
-plot(CTDr.Time(ppT),CTDr.Temp(ppT),'r.');
+plot(CTDr.Time(ppT),CTDr.Temp(ppT),'color',[0 0.4470 0.7410],'Markersize',10,'Marker','.','LineStyle','none');
+grid on
+%legend('Temperature [C]','Bad Temp','Salinity [PSU]','Bad Sal','Pressure [dBar]','Bad Pres','Speed [m/s]','Bad Velocity','Location','bestoutside')
+%legend('Temperature [C]','Salinity [PSU]','Pressure [dBar]','Speed [m/s]','Location','bestoutside')
+title(sprintf('%s%s','CastAway CTD data - SPV - ',cdate));
+set(gca,'FontWeight','Bold','FontSize',18)
 % ... Conductivity
 % plot(CTDr.Time,CTDr.Cond,'color',[1 0.4 0.4],'Markersize',10,'Marker','.','LineStyle','none');
 % ... Salinity 
-plot(CTDr.Time,CTDr.Sal,'color',[0.4660 0.6740 0.1880],'Markersize',10,'Marker','.','LineStyle','none');
-plot(CTDr.Time(ppS),CTDr.Sal(ppS),'r.')
-% ... Pressure
-plot(CTDr.Time,-CTDr.Pres,'color',[0.4 0.4 1],'Markersize',10,'Marker','.','LineStyle','none');
-plot(CTDr.Time(ppP),-CTDr.Pres(ppP),'r.');
-% ... Speed
-plot(CTDr.Time,CTDr.Speed,'color',[0.5 0.5 0.5],'Markersize',8,'Marker','.','LineStyle','none');
-plot(CTDr.Time(ppP),CTDr.Speed(ppP),'r.');
+figure
+plot(CTDr.Time,CTDr.Sal,'color',[0.7 0.7 0.7],'Markersize',10,'Marker','.','LineStyle','-');
+hold on
+plot(CTDr.Time(ppS),CTDr.Sal(ppS),'color',[0.4660 0.6740 0.1880],'Markersize',10,'Marker','.','LineStyle','none');
 grid on
-legend('Temperature [C]','Bad Temp','Salinity [PSU]','Bad Sal','Pressure [dBar]','Bad Pres','Speed [m/s]','Bad Velocity','Location','bestoutside')
+%legend('Temperature [C]','Bad Temp','Salinity [PSU]','Bad Sal','Pressure [dBar]','Bad Pres','Speed [m/s]','Bad Velocity','Location','bestoutside')
+%legend('Temperature [C]','Salinity [PSU]','Pressure [dBar]','Speed [m/s]','Location','bestoutside')
+title(sprintf('%s%s','CastAway CTD data - SPV - ',cdate));
+set(gca,'FontWeight','Bold','FontSize',18)
+%plot(CTDr.Time(ppS),CTDr.Sal(ppS),'r.')
+% ... Pressure
+figure
+plot(CTDr.Time,-CTDr.Pres,'color',[0.7 0.7 0.7],'Markersize',10,'Marker','.','LineStyle','-');
+hold on
+plot(CTDr.Time(ppP),-CTDr.Pres(ppP),'color',[0.4 0.4 1],'Markersize',10,'Marker','.','LineStyle','none');
+%plot(CTDr.Time(ppP),-CTDr.Pres(ppP),'r.');
+grid on
+%legend('Temperature [C]','Bad Temp','Salinity [PSU]','Bad Sal','Pressure [dBar]','Bad Pres','Speed [m/s]','Bad Velocity','Location','bestoutside')
+%legend('Temperature [C]','Salinity [PSU]','Pressure [dBar]','Speed [m/s]','Location','bestoutside')
+title(sprintf('%s%s','CastAway CTD data - SPV - ',cdate));
+set(gca,'FontWeight','Bold','FontSize',18)
+% ... Speed
+figure
+plot(CTDr.Time,CTDr.Speed,'color',[0.7 0.7 0.7],'Markersize',8,'Marker','.','LineStyle','-');
+hold on
+plot(CTDr.Time(ppP),CTDr.Speed(ppP),'color',[0.5 0.5 0.5],'Markersize',8,'Marker','.','LineStyle','none');
+%plot(CTDr.Time(ppP),CTDr.Speed(ppP),'r.');
+grid on
+%legend('Temperature [C]','Bad Temp','Salinity [PSU]','Bad Sal','Pressure [dBar]','Bad Pres','Speed [m/s]','Bad Velocity','Location','bestoutside')
+%legend('Temperature [C]','Salinity [PSU]','Pressure [dBar]','Speed [m/s]','Location','bestoutside')
 title(sprintf('%s%s','CastAway CTD data - SPV - ',cdate));
 set(gca,'FontWeight','Bold','FontSize',18)
 
+return
 % ... Only Temp and Salinity
 figure;
 set(gcf,'Position', get(0, 'Screensize'),'color','w');
 yyaxis left % ... Temperature on Left
 plot(CTDr.Time,CTDr.Temp,'color',[0 0.4470 0.7410],'Markersize',10,'Marker','.','LineStyle','none');
 hold on
-plot(CTDr.Time(ppT),CTDr.Temp(ppT),'color','r','Markersize',8,'Marker','.','LineStyle','none');
+plot(CTDr.Time(ppT),CTDr.Temp(ppT),'color','c','Markersize',8,'Marker','.','LineStyle','none');
 ylabel('Temperature [ \circC ]')
 yyaxis right % ... Salinity on Right
 plot(CTDr.Time,CTDr.Sal,'color',[0.4660 0.6740 0.1880],'Markersize',10,'Marker','.','LineStyle','none');
-plot(CTDr.Time(ppS),CTDr.Sal(ppS),'color','r','Markersize',8,'Marker','.','LineStyle','none');
+plot(CTDr.Time(ppS),CTDr.Sal(ppS),'color','c','Markersize',8,'Marker','.','LineStyle','none');
 ylabel('Salinityty [ psu ]')
 grid on
 % ... Control color of yaxis ...
@@ -437,13 +465,13 @@ set(gca,'fontsize',14,'FontWeight','normal')
 
 % 2. Speed
 ax2 = subplot(2,3,2);
-scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Speed,'filled')
+scatter(CTDr.Lat(ppP),CTDr.Lon(ppP),[],CTDr.Speed(ppP),'filled')
 ylim([41.37 41.39])
 ylabel('Latitude [ \circN ]')
 xlim([2.19 2.22])
 xlabel('Longitude [ \circE ]')
 colorbar
-caxis([0 5]);
+%caxis([0 5]);
 colormap(ax2,flipud(gray))
 grid on
 hold on
@@ -453,15 +481,15 @@ set(gca,'fontsize',14,'FontWeight','normal')
 
 % 3. Pressure
 ax3 = subplot(2,3,3);
-scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Pres,'filled')
+scatter(CTDr.Lat(ppP),CTDr.Lon(ppP),[],CTDr.Pres(ppP),'filled')
 hold on
-scatter(CTDr.Lat(pp),CTDr.Lon(pp),[],CTDr.Pres(pp),'r.')
+%scatter(CTDr.Lat(pp),CTDr.Lon(pp),[],CTDr.Pres(pp),'r.')
 ylim([41.37 41.39])
 ylabel('Latitude [ \circN ]')
 xlim([2.19 2.22])
 xlabel('Longitude [ \circE ]')
 colorbar
-caxis([0 2]);
+%caxis([0 2]);
 colormap (ax3,parula)
 grid on
 hold on
@@ -471,58 +499,59 @@ set(gca,'fontsize',14,'FontWeight','normal')
 
 % 4. Temperature 
 ax4 = subplot(2,3,4);
-scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Temp,'filled')
+scatter(CTDr.Lat(ppT),CTDr.Lon(ppT),[],CTDr.Temp(ppT),'filled')
 hold on
-scatter(CTDr.Lat(pp),CTDr.Lon(pp),[],CTDr.Temp(pp),'r.')
+%scatter(CTDr.Lat(pp),CTDr.Lon(pp),[],CTDr.Temp(pp),'r.')
 ylim([41.37 41.39])
 ylabel('Latitude [ \circN ]')
 xlim([2.19 2.22])
 xlabel('Longitude [ \circE ]')
 colorbar
-caxis([12.5 14])
+%caxis([12.5 14])
 colormap(ax4,jet)
 grid on
 hold on
 scatter(SPV_Lat,SPV_Lon,200,'filled','p','k') % ... Add SPV stations ...
-title('Temperature (raw)');
+title('Temperature');
 set(gca,'fontsize',14,'FontWeight','normal')
 
 % 5. Conductivity
 ax5 = subplot(2,3,5);
-scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Cond,'filled')
+scatter(CTDr.Lat(ppS),CTDr.Lon(ppS),[],CTDr.Cond(ppS),'filled')
 hold on
-scatter(CTDr.Lat(pp),CTDr.Lon(pp),[],CTDr.Cond(pp),'r.')
+%scatter(CTDr.Lat(pp),CTDr.Lon(pp),[],CTDr.Cond(pp),'r.')
 ylim([41.37 41.39])
 ylabel('Latitude [ \circN ]')
 xlim([2.19 2.22])
 xlabel('Longitude [ \circE ]')
 colorbar
-caxis([40 50])
+%caxis([40 50])
 colormap(ax5,jet)
 grid on
 hold on
 scatter(SPV_Lat,SPV_Lon,200,'filled','p','k') % ... Add SPV stations ...
-title('Conductivity (raw)');
+title('Conductivity');
 set(gca,'fontsize',14,'FontWeight','normal')
 
 % 6. Salinity
 ax6 = subplot(2,3,6);
-scatter(CTDr.Lat,CTDr.Lon,[],CTDr.Sal,'filled')
+scatter(CTDr.Lat(ppS),CTDr.Lon(ppS),[],CTDr.Sal(ppS),'filled')
 hold on
-scatter(CTDr.Lat(pp),CTDr.Lon(pp),[],CTDr.Sal(pp),'r.')
+%scatter(CTDr.Lat(pp),CTDr.Lon(pp),[],CTDr.Sal(pp),'r.')
 ylim([41.37 41.39])
 ylabel('Latitude [ \circN ]')
 xlim([2.19 2.22])
 xlabel('Longitude [ \circE ]')
 colorbar
-caxis([37 39])
+%caxis([37 39])
 colormap(ax6,jet)
 grid on
 hold on
 scatter(SPV_Lat,SPV_Lon,200,'filled','p','k')
-title('Salinity (raw)');
+title('Salinity');
 set(gca,'fontsize',14,'FontWeight','normal')
 
+return
 
 %% ... Average mean every 10 sec
 % ...
