@@ -41,6 +41,7 @@ pos_time = datenum(year,month,dd,hh,mm,ss);
 Time = datetime(datestr(pos_time));
 
 eStelaT = timetable(Time,Lat,Lon,Speed,Speed2);
+tsg_position = timetable(Time,Lat,Lon);
 
 clear data tt ifile Time;
 
@@ -74,7 +75,12 @@ Cond = data(:,9);   % uS/cm
 
 CTD = timetable(Time,Pres,Temp,Cond);
 
+tsg_time = timetable(Time,yy,mm,dd,hh,min,ss);    % needed later to create TSGQC input file
+
+tsg_gps = synchronize(tsg_time,tsg_position);
+
 clear data tt ifile;
+
 %% Create collocated data ...
 % ...
 
@@ -85,7 +91,28 @@ pati = synchronize(eStelaT,CTD);
 ofile = sprintf('%s%s%s','/home/nina/Escritorio/WORK/PatiCientific/data/SPV/SeaWater/Surface/CastAwayCTD/RAW/collocated_surface_sections/SPV_',cdate,'_collocated_raw');
 writetable(timetable2table(pati),sprintf('%s%s',ofile,'.dat'));   % txt file with struct of matlab
 
+%% Create collocated data to be processed with TSGQC code which needs to follow this organisation columns:
+%HEADER YEAR MNTH DAYX hh mi ss LATX LONX CNDC CNDC_CAL SSPS SSPS_QC SSPS_CAL SSPS_ADJUSTED SSPS_ADJUSTED_QC SSPS_ADJUSTED_ERROR SSJT SSJT_QC SSJT_CAL SSJT_ADJUSTED SSJT_ADJUSTED_QC SSJT_ADJUSTED_ERROR SSTP SSTP_QC SSTP_CAL SSTP_ADJUSTED SSTP_ADJUSTED_QC SSTP_ADJUSTED_ERROR CNDC_FREQ SSJT_FREQ FLOW
+% ...
 
+FlagT = Temp * zeros;
+FlagC = FlagT;
+FlagS = FlagT;
+FlagP = FlagT;
+
+
+% ... Calcul Salinity value from C,T,P (using conduc2sali.m funcion)
+% ... TEOS-10
+[Sal]= conduc2sali(Cond,Temp,Pres);
+tsg_data = timetable(Time,Cond,FlagC,Sal,FlagS,Temp,FlagT,Pres,FlagP);
+
+TSG_all = synchronize(tsg_gps,tsg_data);
+TSGrm = rmmissing(TSG_all);
+TSG = timetable2table(TSGrm);
+TSG.Time = [];
+
+ofile = sprintf('%s%s%s','/home/nina/Escritorio/WORK/PatiCientific/data/SPV/SeaWater/Surface/CastAwayCTD/PROC/tsgqc_input_files/SPV_',cdate,'_collocated_raw_tsgqc_input');
+writetable(TSG,sprintf('%s%s',ofile,'.dat'));   % txt file with struct of matlab
 return
 
 % % ... Check size of both table ...

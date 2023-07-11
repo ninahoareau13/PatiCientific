@@ -364,7 +364,7 @@ ppP = find(CTDr.FlagS<3);
 
 % ... I. Time serie Figures
 % ...
-% ... All parameters: Temp, Pres, Speed, Cond, Sal
+% ... parameters: Temp, Pres, Speed, Cond, Sal
 % figure;
 % set(gcf,'Position', get(0, 'Screensize'),'color','w');
 % ... Temperature
